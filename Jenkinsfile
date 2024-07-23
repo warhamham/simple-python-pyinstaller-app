@@ -12,7 +12,6 @@ node {
         docker.image(testDockerImage).inside {
             sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
         }
-        // Publish test results
         junit 'test-reports/results.xml'
     }
 }
