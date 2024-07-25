@@ -45,8 +45,8 @@ pipeline {
             steps {
                 sh 'pip install pyinstaller'
                 sh 'pyinstaller --onefile sources/add2vals.py'
-                sleep time: 1
-                echo 'Aplikasi sudah berjalan'
+                sleep time: 1, unit: 'MINUTES'
+                echo 'Applikasi berjalan'
             }
 
             post {
