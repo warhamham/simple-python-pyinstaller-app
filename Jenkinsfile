@@ -26,14 +26,19 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
-            agent {
-                docker {
-                    image 'cdrx/pyinstaller-linux:python2'
+        stage('Manual Approval') {
+            steps {
+                script {
+                    input message: 'Lanjutkan ke tahap Deploy?', ok: 'Proceed'
                 }
             }
+        }
+        stage('Deploy') {
             steps {
                 sh 'pyinstaller --onefile sources/add2vals.py'
+                echo 'Aplikasi akan berjalan selama 1 menit...'
+                sleep time: 1, unit: 'MINUTES'  // Jeda selama 1 menit (60 detik)
+                echo 'Menghentikan aplikasi...'
             }
             post {
                 success {
