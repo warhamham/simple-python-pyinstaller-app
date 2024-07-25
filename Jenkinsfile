@@ -26,11 +26,23 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') { 
+        stage('Deploy') {
+            agent {
+                docker {
+                    image 'cdrx/pyinstaller-linux:python2'
+                }
+            }
             steps {
-                sh './jenkins/scripts/deliver.sh' 
-                input message: 'Sudah selesai menggunakan React App? (Klik "Proceed" untuk mengakhiri)' 
-                sh './jenkins/scripts/kill.sh' 
+                sh 'pyinstaller --onefile sources/add2vals.py'
+                echo 'Aplikasi akan berjalan selama 1 menit...'
+                sleep time: 1, unit: 'MINUTES'
+                echo 'Mengakhiri aplikasi...'
+                sh 'pkill add2vals' // Sesuaikan dengan perintah untuk menghentikan aplikasi Anda jika berbeda
+            }
+            post {
+                success {
+                    archiveArtifacts 'dist/add2vals'
+                }
             }
         }
     }
