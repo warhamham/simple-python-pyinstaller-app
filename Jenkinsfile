@@ -34,6 +34,11 @@ pipeline {
             }
         }
         stage('Deploy') {
+            agent {
+                docker {
+                    image 'cdrx/pyinstaller-linux:python2'
+                }
+            }
             steps {
                 sh 'pyinstaller --onefile sources/add2vals.py'
                 echo 'Aplikasi akan berjalan selama 1 menit...'
