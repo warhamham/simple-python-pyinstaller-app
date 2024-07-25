@@ -4,8 +4,7 @@ pipeline {
         stage('Build') {
             agent {
                 docker {
-                    image 'python:3.9'
-                    args '-u root'
+                    image 'python:2-alpine'
                 }
             }
             steps {
@@ -27,19 +26,14 @@ pipeline {
                 }
             }
         }
-        stage('Manual Approval') {
-            steps {
-                script {
-                    input message: 'Lanjutkan ke tahap Deploy?', ok: 'Proceed'
+        stage('Deploy') {
+            agent {
+                docker {
+                    image 'cdrx/pyinstaller-linux:python2'
                 }
             }
-        }
-        stage('Deploy') {
             steps {
-                sh 'pip install pyinstaller'
                 sh 'pyinstaller --onefile sources/add2vals.py'
-                sleep time: 1, unit: 'MINUTES'
-                echo 'Pipeline has finished successfully.'
             }
             post {
                 success {
