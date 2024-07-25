@@ -4,7 +4,8 @@ pipeline {
         stage('Build') {
             agent {
                 docker {
-                    image 'python:2-alpine'
+                    image 'python:3.9'
+                    args '-u root'
                 }
             }
             steps {
@@ -34,12 +35,6 @@ pipeline {
             }
         }
         stage('Deploy') {
-            agent {
-                docker {
-                    image 'python:3.9'
-                    args '-u root'
-                }
-            }
             steps {
                 sh 'pip install pyinstaller'
                 sh 'pyinstaller --onefile sources/add2vals.py'
