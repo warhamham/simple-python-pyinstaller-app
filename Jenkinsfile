@@ -26,39 +26,20 @@ pipeline {
                 }
             }
         }
-        stage('Manual Approval') {
-            steps {
-                script {
-                    input message: 'Lanjutkan ke tahap Deploy?', ok: 'Proceed'
-                }
-            }
-        }
-        stage('Deploy') {
-
+        stage('Deliver') {
             agent {
-
                 docker {
-                    image 'python:3.9'
-                    args '-u root'
+                    image 'cdrx/pyinstaller-linux:python2'
                 }
             }
             steps {
-                sh 'pip install pyinstaller'
                 sh 'pyinstaller --onefile sources/add2vals.py'
-                sleep time: 1, unit: 'MINUTES'
-                echo 'Applikasi berjalan'
             }
-
             post {
-
                 success {
-
                     archiveArtifacts 'dist/add2vals'
-
                 }
-
             }
-
         }
     }
 }
