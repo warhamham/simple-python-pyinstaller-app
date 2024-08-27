@@ -5,6 +5,7 @@ pipeline {
             agent {
                 docker {
                     image 'python:2-alpine'
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
             steps {
@@ -15,6 +16,7 @@ pipeline {
             agent {
                 docker {
                     image 'qnib/pytest'
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
             steps {
@@ -30,6 +32,7 @@ pipeline {
             agent {
                 docker {
                     image 'cdrx/pyinstaller-linux:python2'
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
             steps {
